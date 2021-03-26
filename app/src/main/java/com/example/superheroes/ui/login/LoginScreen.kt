@@ -14,19 +14,22 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.superheroes.R
+import com.example.superheroes.ui.list.navigateTo
+import com.example.superheroes.ui.navigation.ScreenNavigator
 import com.example.superheroes.ui.theme.Purple500
 
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
 
     var email: String by remember { mutableStateOf("") }
     var password: String by remember { mutableStateOf("") }
@@ -36,7 +39,7 @@ fun LoginScreen() {
         password = password,
         onEmailChange = { email = it },
         onPasswordChange = { password = it },
-        onLoginClicked = {}
+        onLoginClicked = { navController navigateTo "listScreen" }
     )
 }
 
@@ -48,38 +51,37 @@ fun LoginContent(
     onPasswordChange: (String) -> Unit,
     onLoginClicked: () -> Unit
 ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.purple_200)),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
 
-                UserPhoto()
+        UserPhoto()
 
-                Spacer(Modifier.padding(10.dp))
+        Spacer(Modifier.padding(10.dp))
 
-                EmailField(email, onEmailChange)
+        EmailField(email, onEmailChange)
 
-                Spacer(Modifier.padding(4.dp))
+        Spacer(Modifier.padding(4.dp))
 
-                PasswordField(password, onPasswordChange)
+        PasswordField(password, onPasswordChange)
 
-                Spacer(Modifier.padding(20.dp))
+        Spacer(Modifier.padding(20.dp))
 
-                LoginButton(onLoginClicked)
+        LoginButton(onLoginClicked)
 
-        }
     }
+}
 
 @Composable
 fun EmailField(email: String, onEmailChange: (String) -> Unit) {
     OutlinedTextField(
         value = email,
         onValueChange = onEmailChange,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            unfocusedBorderColor = Purple500
-        ),
+        colors = TextFieldDefaults.outlinedTextFieldColors(unfocusedBorderColor = Purple500),
         label = { Text("Email") },
         leadingIcon = {
             Icon(
@@ -95,16 +97,14 @@ fun PasswordField(password: String, onPasswordChange: (String) -> Unit) {
     OutlinedTextField(
         value = password,
         onValueChange = onPasswordChange,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            unfocusedBorderColor = Purple500
-        ),
+        colors = TextFieldDefaults.outlinedTextFieldColors(unfocusedBorderColor = Purple500),
         label = { Text("Password") },
         visualTransformation = PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         leadingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_password),
-                contentDescription = null
+                contentDescription = null,
             )
         }
     )
@@ -135,7 +135,6 @@ fun UserPhoto() {
             .fillMaxWidth(),
         shape = CircleShape
     ) {
-
         Image(
             painter = painterResource(id = R.drawable.luffy),
             contentDescription = null,
@@ -155,20 +154,12 @@ fun LoginTopBar(title: String) {
             Icon(Icons.Filled.Menu, contentDescription = null)
         }
     )
-
 }
-
-@Composable
-fun BackgroundImage() {
-    val image: Painter = painterResource(id = R.drawable.backgound)
-    Image(painter = image, contentDescription = null, contentScale = ContentScale.FillHeight)
-}
-
 
 @Preview
 @Composable
 fun DefaultPreview() {
     MaterialTheme {
-        LoginScreen()
+        ScreenNavigator()
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.superheroes.ui.login.LoginScreen
 import com.example.superheroes.ui.login.LoginTopBar
+import com.example.superheroes.ui.navigation.ScreenNavigator
 import com.example.superheroes.ui.theme.SuperHeroesTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,18 +18,17 @@ class MainActivity : ComponentActivity() {
             SuperHeroesTheme {
                 Scaffold(
                     topBar = { LoginTopBar("Super Hero App") },
-                    content = { LoginScreen() }
+                    content = { ScreenNavigator()}
                 )
             }
         }
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     SuperHeroesTheme {
-        LoginScreen()
+        ScreenNavigator()
     }
 }
